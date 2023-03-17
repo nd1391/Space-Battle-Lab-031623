@@ -74,15 +74,17 @@ let ussAssembly = {
   // Alien ship properties
   let alienShips = [];
   let numberOfAlienShips = 6;
+  let shipNames = ['Martian', 'Neptunian', 'Uranuser', 'Venusian', 'Jupiter-ian', 'Saturanian', 'Plutopian']
   for (let i = 0; i < numberOfAlienShips; i++) {
     let alienShip = {
+      name: shipNames[i],
       hull: Math.floor(Math.random() * 4) + 3,
       firepower: Math.floor(Math.random() * 3) + 2,
       accuracy: (Math.floor(Math.random() * 3) + 6) / 10,
     };
     alienShips.push(alienShip);
   }
-  
+  console.log(alienShips)
   // Game logic
   let currentShipIndex = 0;
   let isGameOver = false;
@@ -91,42 +93,47 @@ let ussAssembly = {
     let currentShip = alienShips[currentShipIndex];
   
     // USS Assembly attacks
-    console.log(`You attack alien ship ${currentShipIndex + 1}`);
+    console.log(`You attack alien ship ${shipNames[currentShipIndex + 1]}`);
     if (Math.random() < ussAssembly.accuracy) {
-      console.log('Your attack hits the alien ship!');
+      console.log(`Your attack hits the ${shipNames[currentShipIndex + 1]}`);
       currentShip.hull -= ussAssembly.firepower;
     } else {
-      console.log('Your attack misses the alien ship!');
+      console.log(`Your attack missed! Couldn't hit the broad side of a barn, couldja!?`);
     }
   
     // Check if the alien ship is destroyed
     if (currentShip.hull <= 0) {
-      console.log(`You destroyed alien ship ${currentShipIndex + 1}`);
+      console.log(`You destroyed alien ship ${shipNames[currentShipIndex + 1]}`);
   
       // Check if there are more alien ships to attack
       if (currentShipIndex === numberOfAlienShips - 1) {
-        console.log('Congratulations! You have destroyed all the alien ships!');
+        console.log('Congratulations! You have destroyed the entire enemy fleet!');
         isGameOver = true;
       } else {
 
         // Ask the user if they want to attack the next ship or retreat
-        let input = prompt('Do you want to attack the next ship or retreat? (a/r)');
-        if (input.toLowerCase() === 'r') {
-          console.log('Game over. You retreated from the battle.');
-          isGameOver = true;
+        let input = window.prompt('Do you want to attack the next ship or retreat? (Advance or Retreat)');
+        console.log(input);
+        if (input) {
+          if (input.toLowerCase() === 'retreat') {
+            console.log('Game over. You retreated from the battle.');
+            isGameOver = true;
+          } else {
+            currentShipIndex++;
+          }
         } else {
-          currentShipIndex++;
+          console.log('QUITTER!')
         }
       }
     } else {
         
       // Alien ship attacks
-      console.log(`Alien ship ${currentShipIndex + 1} attacks!`);
+      console.log(`Alien ship ${shipNames[currentShipIndex + 1]} attacks!`);
       if (Math.random() < currentShip.accuracy) {
-        console.log('The alien ship hits you!');
+        console.log(`The ${shipNames[currentShipIndex + 1]} hit you!`);
         ussAssembly.hull -= currentShip.firepower;
       } else {
-        console.log('The alien ship misses you!');
+        console.log(`The ${shipNames[currentShipIndex + 1]} misses you!`);
       }
   
       // Check if USS Assembly is destroyed
